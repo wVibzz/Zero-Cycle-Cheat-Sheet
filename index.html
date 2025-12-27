@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zero Cycle Cheat Sheet</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #030712; color: white; font-family: system-ui, -apple-system, sans-serif; min-height: 100vh; padding: 12px; }
+    .container { max-width: 672px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+    h1 { font-size: 1.125rem; font-weight: bold; text-align: center; background: linear-gradient(to right, #34d399, #22d3ee); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .card { background: #111827; border-radius: 8px; border: 1px solid #1f2937; padding: 8px; }
+    .section-label { font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+    .btn { padding: 4px 8px; font-size: 12px; border-radius: 4px; font-weight: 500; cursor: pointer; border: none; transition: background 0.2s; }
+    .btn-default { background: #1f2937; color: #d1d5db; }
+    .btn-default:hover { background: #374151; }
+    .btn-small { background: #059669; color: white; }
+    .btn-tall { background: #d97706; color: white; }
+    .btn-special { background: #7c3aed; color: white; }
+    .btn span { color: #9ca3af; }
+    .header { background: #1f2937; padding: 8px 12px; display: flex; align-items: center; justify-content: between; border-radius: 8px 8px 0 0; margin: -8px -8px 12px -8px; }
+    .header-left { flex: 1; }
+    .tower-name { font-size: 1.25rem; font-weight: bold; color: #fbbf24; }
+    .tower-alt { color: #9ca3af; margin-left: 8px; }
+    .tower-height { color: #6b7280; margin-left: 8px; }
+    .normal-y { font-size: 12px; background: #374151; padding: 4px 8px; border-radius: 4px; }
+    .normal-y span { color: #fef08a; font-weight: bold; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .box { background: rgba(31, 41, 55, 0.5); border-radius: 4px; padding: 8px; }
+    .box-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; font-weight: 600; }
+    .box-label.front { color: #34d399; }
+    .box-label.back { color: #fb7185; }
+    .row { margin-bottom: 4px; }
+    .row-label { font-size: 10px; color: #6b7280; }
+    .row-value { margin-left: 8px; font-family: monospace; }
+    .row-value.yellow { color: #fef08a; font-weight: bold; }
+    .row-value.cyan { color: #67e8f9; }
+    .row-note { color: #6b7280; font-size: 10px; margin-left: 4px; }
+    .divider { margin-top: 8px; padding-top: 8px; border-top: 1px solid #374151; }
+    .divider-label { font-size: 10px; color: #9ca3af; margin-bottom: 4px; }
+    .no-back { color: #4b5563; font-size: 14px; }
+    .alts-section { margin-top: 16px; }
+    .alts-label { font-size: 10px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; font-weight: 600; }
+    .alts { display: flex; flex-wrap: wrap; gap: 6px; }
+    .coord { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-family: monospace; display: inline-flex; align-items: center; gap: 6px; }
+    .coord-default { background: #374151; }
+    .coord-best { background: #0284c7; }
+    .coord-easy { background: #059669; }
+    .coord-popular { background: #b45309; }
+    .coord-y { color: #fef08a; font-weight: bold; }
+    .coord-xz { color: white; font-weight: 500; }
+    .coord-double { color: #fdba74; font-size: 10px; }
+    .legend { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 16px; font-size: 10px; color: #9ca3af; }
+    .legend-item { display: flex; align-items: center; gap: 4px; }
+    .legend-dot { width: 8px; height: 8px; border-radius: 2px; }
+    .legend-dot.best { background: #0284c7; }
+    .legend-dot.easy { background: #059669; }
+    .legend-dot.popular { background: #b45309; }
+    .orange { color: #fdba74; }
+    .yellow { color: #fef08a; }
+    @media (max-width: 500px) { .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Zero Cycle Cheat Sheet</h1>
+    <div class="card">
+      <div class="section-label">Small Towers</div>
+      <div class="btn-row" id="small-towers"></div>
+      <div class="section-label">Tall Towers</div>
+      <div class="btn-row" id="tall-towers"></div>
+      <div class="section-label">Special</div>
+      <div class="btn-row" id="special-towers"></div>
+    </div>
+    <div class="card">
+      <div class="header">
+        <div class="header-left" id="tower-header"></div>
+        <div id="tower-normaly"></div>
+      </div>
+      <div id="tower-details"></div>
+    </div>
+    <div class="legend">
+      <span class="legend-item"><span class="legend-dot best"></span> Easy + Popular</span>
+      <span class="legend-item"><span class="legend-dot easy"></span> Easiest</span>
+      <span class="legend-item"><span class="legend-dot popular"></span> Popular</span>
+      <span><span class="orange">(Double)</span> = Double bed setup</span>
+      <span>💥 = Anchor breaks crystal</span>
+      <span><span class="yellow">-1</span> = Stand 1 lower</span>
+    </div>
+  </div>
+  <script>
+    const towers = [
+      { name: "Small Boy", h: 76, category: "small", front: { y: [88, 91, 95, 99], xz: "28, -26" }, back: { y: [88, 91, 95], xz: "-29, 25" }, alts: [{ xz: "28, 25", t: "b" }, { xz: "28, 26", t: "" }, { xz: "29, 25", t: "" }, { y: "91", xz: "31, 28", t: "" }, { xz: "30, 27", t: "d" }, { y: "-1", xz: "30, 27", t: "d" }, { y: "-1", xz: "30, 26", t: "d" }, { xz: "30, 29", t: "" }], normalY: 88 },
+      { name: "Small Cage", h: 79, category: "small", front: { y: [88, 91, 95, 99], xz: "28, -26" }, back: { y: [88, 91, 95], xz: "-29, 25" }, alts: [{ xz: "28, 25", t: "b" }, { xz: "28, 26", t: "" }, { xz: "29, 25", t: "" }, { y: "91", xz: "31, 28", t: "" }, { xz: "30, 27", t: "d" }, { y: "-1", xz: "30, 27", t: "d" }, { y: "-1", xz: "30, 26", t: "d" }, { xz: "30, 29", t: "" }], normalY: 91 },
+      { name: "Tall Cage", h: 82, category: "small", front: { y: [88, 91, 95, 99], xz: "28, -26" }, back: { y: [91, 95, 99], xz: "-29, 25" }, alts: [{ xz: "28, 25", t: "b" }, { xz: "28, 26", t: "" }, { xz: "29, 25", t: "" }, { y: "91", xz: "31, 28", t: "" }, { xz: "30, 27", t: "d" }, { y: "-1", xz: "30, 27", t: "d" }, { y: "-1", xz: "30, 26", t: "d" }, { xz: "30, 29", t: "" }], normalY: 95 },
+      { name: "M-85", h: 85, category: "small", front: { y: [91, 95, 99], xz: "28, -26" }, back: { y: [91, 95, 99], xz: "-29, 25" }, alts: [{ xz: "28, 25", t: "b" }, { xz: "28, 26", t: "" }, { xz: "29, 25", t: "" }, { y: "91", xz: "31, 28", t: "" }, { xz: "30, 27", t: "d" }, { y: "-1", xz: "30, 27", t: "d" }, { y: "-1", xz: "30, 26", t: "d" }, { xz: "30, 29", t: "" }], normalY: 99 },
+      { name: "M-88", h: 88, category: "small", front: { y: [95, 99], xz: "28, -26" }, back: { y: [95, 99], xz: "-29, 25" }, alts: [{ xz: "28, 25", t: "b" }, { xz: "28, 26", t: "" }, { xz: "29, 25", t: "" }, { y: "91", xz: "31, 28", t: "" }, { xz: "30, 27", t: "d" }, { y: "-1", xz: "30, 27", t: "d" }, { y: "-1", xz: "30, 26", t: "d" }, { xz: "30, 29", t: "" }], normalY: 104 },
+      { name: "M-91", h: 91, category: "tall", front: { y: [99], xz: "28, -26" }, back: { y: [99], xz: "-29, 25" }, alts: [{ xz: "28, 25", t: "b" }, { xz: "28, 26", t: "" }, { y: "95", xz: "30, 27", t: "da" }] },
+      { name: "T-94", h: 94, category: "tall", front: { y: [99, 104], xz: "28, -26" }, back: { y: [99], xz: "-29, 25" }, alts: [{ xz: "28, 25", t: "b" }, { xz: "28, 26", t: "" }, { y: "99", xz: "30, 27", t: "d" }] },
+      { name: "T-97", h: 97, category: "tall", front: { y: [104], xz: "27, -26" }, frontLow: { y: [99], xz: "29, -30" }, back: { y: [99], xz: "-29, 29", note: "offset" }, alts: [{ y: "99", xz: "29, 29", t: "p" }, { y: "104", xz: "27, 25", t: "" }, { y: "89", xz: "28, 29", t: "de" }, { y: "95", xz: "27, 28", t: "da" }, { y: "99", xz: "30, 30", t: "" }] },
+      { name: "T-100", h: 100, category: "tall", front: { y: [104], xz: "30, -30" }, back: { y: [104], xz: "-28, 25" }, alts: [{ y: "104", xz: "31, 29", t: "" }, { y: "104", xz: "27, 25", t: "" }, { y: "90", xz: "28, 29", t: "db" }, { y: "89", xz: "27, 25", t: "" }, { y: "95", xz: "27, 28", t: "da" }, { y: "104", xz: "27, 25", t: "" }] },
+      { name: "T-103", h: 103, category: "tall", altName: "Tall Boy", front: { y: [104], xz: "28, -30" }, back: null, alts: [{ y: "104", xz: "28, 29", t: "" }, { y: "-1", xz: "29, 28", t: "db" }, { y: "90", xz: "28, 30", t: "d" }] },
+      { name: "1/8", h: null, category: "special", front: { y: [88, 92, 97, 102], xz: "23, 0" }, back: { y: [88, 92, 97], xz: "-23, -1" }, alts: [{ y: "+2", xz: "23, 0", t: "b" }] }
+    ];
+
+    let selected = towers[0];
+
+    function renderCoord(c, normalY) {
+      const d = c.t?.includes("d"), a = c.t?.includes("a"), b = c.t?.includes("b");
+      const e = c.t?.includes("e") && !b, p = c.t?.includes("p") && !b;
+      let cls = "coord coord-default";
+      if (b) cls = "coord coord-best"; else if (e) cls = "coord coord-easy"; else if (p) cls = "coord coord-popular";
+      const displayY = c.y || (normalY ? `Y${normalY}` : "");
+      return `<span class="${cls}">${displayY ? `<span class="coord-y">${displayY}</span>` : ""}<span class="coord-xz">${c.xz}</span>${d ? `<span class="coord-double">(Double)</span>` : ""}${a ? `<span>💥</span>` : ""}</span>`;
+    }
+
+    function renderButtons() {
+      const cats = { small: "small-towers", tall: "tall-towers", special: "special-towers" };
+      const colors = { small: "btn-small", tall: "btn-tall", special: "btn-special" };
+      Object.keys(cats).forEach(cat => {
+        document.getElementById(cats[cat]).innerHTML = towers.filter(t => t.category === cat).map(t => {
+          const isSelected = selected.name === t.name;
+          return `<button onclick="selectTower('${t.name}')" class="btn ${isSelected ? colors[cat] : 'btn-default'}">${t.name}${t.h ? ` <span>(${t.h})</span>` : ""}</button>`;
+        }).join("");
+      });
+    }
+
+    function renderDetails() {
+      document.getElementById("tower-header").innerHTML = `<span class="tower-name">${selected.name}</span>${selected.altName ? `<span class="tower-alt">(${selected.altName})</span>` : ""}${selected.h ? `<span class="tower-height">Height: ${selected.h}</span>` : ""}`;
+      document.getElementById("tower-normaly").innerHTML = selected.normalY ? `<span class="normal-y">Normal Y: <span>${selected.normalY}</span></span>` : "";
+      
+      let frontLowHtml = "";
+      if (selected.frontLow) {
+        frontLowHtml = `<div class="divider"><div class="divider-label">Low Offset:</div><div class="row"><span class="row-label">Y:</span><span class="row-value yellow">${selected.frontLow.y.join(", ")}</span></div><div class="row"><span class="row-label">Coords:</span><span class="row-value cyan">${selected.frontLow.xz}</span></div></div>`;
+      }
+
+      let backHtml = selected.back 
+        ? `<div class="row"><span class="row-label">Y Heights:</span><span class="row-value yellow">${selected.back.y.join(", ")}</span></div><div class="row"><span class="row-label">Coords:</span><span class="row-value cyan">${selected.back.xz}</span>${selected.back.note ? `<span class="row-note">(${selected.back.note})</span>` : ""}</div>`
+        : `<div class="no-back">No back setup</div>`;
+
+      let altsHtml = "";
+      if (selected.alts?.length) {
+        altsHtml = `<div class="alts-section"><div class="alts-label">Alternative Setups</div><div class="alts">${selected.alts.map(c => renderCoord(c, selected.normalY)).join("")}</div></div>`;
+      }
+
+      document.getElementById("tower-details").innerHTML = `
+        <div class="grid">
+          <div class="box"><div class="box-label front">Front</div><div class="row"><span class="row-label">Y Heights:</span><span class="row-value yellow">${selected.front.y.join(", ")}</span></div><div class="row"><span class="row-label">Coords:</span><span class="row-value cyan">${selected.front.xz}</span></div>${frontLowHtml}</div>
+          <div class="box"><div class="box-label back">Back</div>${backHtml}</div>
+        </div>
+        ${altsHtml}
+      `;
+    }
+
+    function selectTower(name) {
+      selected = towers.find(t => t.name === name);
+      renderButtons();
+      renderDetails();
+    }
+
+    renderButtons();
+    renderDetails();
+  </script>
+</body>
+</html>
