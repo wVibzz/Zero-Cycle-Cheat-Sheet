@@ -172,6 +172,64 @@ h1 {
 .orange { color: #fdba74; }
 .yellow { color: #fef08a; }
 
+/* Y Height Tabs */
+.y-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.y-tab {
+  padding: 4px 10px;
+  font-size: 11px;
+  font-family: monospace;
+  font-weight: bold;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  background: #1f2937;
+  color: #9ca3af;
+  transition: all 0.15s;
+}
+
+.y-tab:hover {
+  background: #374151;
+  color: #d1d5db;
+}
+
+.y-tab-active {
+  background: #fef08a;
+  color: #1f2937;
+}
+
+.y-tab-active:hover {
+  background: #fde047;
+  color: #1f2937;
+}
+
+.selected-coords {
+  margin-bottom: 8px;
+}
+
+.y-alts {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #374151;
+}
+
+.y-alts-label {
+  font-size: 10px;
+  color: #6b7280;
+  margin-bottom: 6px;
+}
+
+.y-alts-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
 @media (max-width: 500px) {
   .grid { grid-template-columns: 1fr; }
 }
