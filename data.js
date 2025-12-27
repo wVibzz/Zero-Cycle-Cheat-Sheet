@@ -32,7 +32,6 @@ const towers = [
     front: {
       90: [{ xz: "28, -26" }],
       95: [{ xz: "28, -26" }],
-
       99: [{ xz: "28, -26" }]
     },
     back: {
@@ -59,7 +58,6 @@ const towers = [
     front: {
       95: [{ xz: "28, -26" }],
       99: [{ xz: "28, -26" }]
-
     },
     back: {
       95: [{ xz: "-29, 25" }, { xz: "-30, 25" }],
@@ -70,7 +68,6 @@ const towers = [
     name: "M-91", h: 91, category: "tall",
     front: {
       99: [{ xz: "28, -26" }]
-
     },
     back: {
       99: [{ xz: "-29, 25" }, { xz: "-30, 25" }]
@@ -93,7 +90,6 @@ const towers = [
       100: [{ xz: "26, -26" }],
       103: [{ xz: "28, -26" }],
       104: [{ xz: "27, -26" }]
-
     },
     frontLow: {
       99: [{ xz: "29, -30" }]
@@ -106,9 +102,6 @@ const towers = [
     name: "T-100", h: 100, category: "tall",
     front: {
       104: [{ xz: "30, -30" }]
-
-
-
     },
     back: {
       104: [{ xz: "-28, 25" }]
@@ -118,7 +111,6 @@ const towers = [
     name: "T-103", h: 103, category: "tall", altName: "Tall Boy",
     front: {
       104: [{ xz: "28, -30" }, { xz: "29, -31" }]
-
     },
     back: null
   },
