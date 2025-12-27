@@ -1,0 +1,177 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #030712;
+  color: white;
+  font-family: system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+  padding: 12px;
+}
+
+.container {
+  max-width: 672px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+h1 {
+  font-size: 1.125rem;
+  font-weight: bold;
+  text-align: center;
+  background: linear-gradient(to right, #34d399, #22d3ee);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.card {
+  background: #111827;
+  border-radius: 8px;
+  border: 1px solid #1f2937;
+  padding: 8px;
+}
+
+.section-label {
+  font-size: 10px;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.btn {
+  padding: 4px 8px;
+  font-size: 12px;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s;
+}
+
+.btn-default { background: #1f2937; color: #d1d5db; }
+.btn-default:hover { background: #374151; }
+.btn-small { background: #059669; color: white; }
+.btn-tall { background: #d97706; color: white; }
+.btn-special { background: #7c3aed; color: white; }
+.btn span { color: #9ca3af; }
+
+.header {
+  background: #1f2937;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 8px 8px 0 0;
+  margin: -8px -8px 12px -8px;
+}
+
+.header-left { flex: 1; }
+.tower-name { font-size: 1.25rem; font-weight: bold; color: #fbbf24; }
+.tower-alt { color: #9ca3af; margin-left: 8px; }
+.tower-height { color: #6b7280; margin-left: 8px; }
+
+.normal-y {
+  font-size: 12px;
+  background: #374151;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+.normal-y span { color: #fef08a; font-weight: bold; }
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.box {
+  background: rgba(31, 41, 55, 0.5);
+  border-radius: 4px;
+  padding: 8px;
+}
+
+.box-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.box-label.front { color: #34d399; }
+.box-label.back { color: #fb7185; }
+
+.row { margin-bottom: 4px; }
+.row-label { font-size: 10px; color: #6b7280; }
+.row-value { margin-left: 8px; font-family: monospace; }
+.row-value.yellow { color: #fef08a; font-weight: bold; }
+.row-value.cyan { color: #67e8f9; }
+.row-note { color: #6b7280; font-size: 10px; margin-left: 4px; }
+
+.divider {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #374151;
+}
+.divider-label { font-size: 10px; color: #9ca3af; margin-bottom: 4px; }
+
+.no-back { color: #4b5563; font-size: 14px; }
+
+.alts-section { margin-top: 16px; }
+.alts-label {
+  font-size: 10px;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.alts { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.coord {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-family: monospace;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.coord-default { background: #374151; }
+.coord-best { background: #0284c7; }
+.coord-easy { background: #059669; }
+.coord-popular { background: #b45309; }
+.coord-y { color: #fef08a; font-weight: bold; }
+.coord-xz { color: white; font-weight: 500; }
+.coord-double { color: #fdba74; font-size: 10px; }
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  font-size: 10px;
+  color: #9ca3af;
+}
+.legend-item { display: flex; align-items: center; gap: 4px; }
+.legend-dot { width: 8px; height: 8px; border-radius: 2px; }
+.legend-dot.best { background: #0284c7; }
+.legend-dot.easy { background: #059669; }
+.legend-dot.popular { background: #b45309; }
+
+.orange { color: #fdba74; }
+.yellow { color: #fef08a; }
+
+@media (max-width: 500px) {
+  .grid { grid-template-columns: 1fr; }
+}
