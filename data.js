@@ -97,7 +97,7 @@ const topSetup = [
       99: [{ xz: "29, -30" }]
     },
     back: {
-      100: [{ xz: "-28, 26"}]
+      100: [{ xz: "-28, 26" }]
     }
   },
   {
@@ -115,7 +115,7 @@ const topSetup = [
       104: [{ xz: "28, -30" }, { xz: "29, -31" }]
     },
     back: {
-      99: [{ xz: "-26, 27", t: "db"}]
+      99: [{ xz: "-26, 27", t: "db" }]
     }
   },
   {
@@ -139,17 +139,17 @@ const sideSetup = [
   {
     name: "M-85", h: 85, category: "small",
     front: {
-      86: [{ xz: "28, -30 (MultiBlock)" }, { xz: "28, -31" }],
+      86: [{ xz: "28, -30 (MultiBlock)" }, { xz: "28, -31" }]
     },
     back: {
-      86: [{ xz: "-30, 29 (MultiBlock)" }, { xz: "-30, 30" }],
+      86: [{ xz: "-30, 29 (MultiBlock)" }, { xz: "-30, 30" }]
     }
   },
   {
     name: "M-88", h: 88, category: "small",
     front: {
       86: [{ xz: "28, -30 (MultiBlock)" }, { xz: "28, -31" }],
-      90: [{ xz: "29, -29 (MultiBlock)" }, { xz: "29, -30" }],
+      90: [{ xz: "29, -29 (MultiBlock)" }, { xz: "29, -30" }]
     },
     back: {
       86: [{ xz: "-30, 30 (MultiBlock)" }, { xz: "-30, 31" }],
@@ -174,7 +174,7 @@ const sideSetup = [
     front: {
       86: [{ xz: "29, -31 (MultiBlock)" }, { xz: "29, -32" }],
       90: [{ xz: "28, -30 (MultiBlock)" }, { xz: "28, -31" }],
-      95: [{ xz: "29, -30 (MultiBlock)" }, { xz: "29, -31" }],
+      95: [{ xz: "29, -30 (MultiBlock)" }, { xz: "29, -31" }]
     },
     back: {
       86: [{ xz: "-30, 30 (MultiBlock)" }],
@@ -222,4 +222,3 @@ const sideSetup = [
     }
   }
 ];
-
