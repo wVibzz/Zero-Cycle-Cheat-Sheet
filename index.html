@@ -7,29 +7,38 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="container">
-    <h1>Zero Cycle Cheat Sheet</h1>
-    
-    <div class="card">
-      <div class="section-label">Setups</div>
-      <div class="btn-row">
-        <button onclick="setMode('top')" id="btn-mode-top" class="btn btn-setup btn-setup-active">Top Setup</button>
-        <button onclick="setMode('side')" id="btn-mode-side" class="btn btn-setup">Side Setup</button>
+  <div class="header">
+    <div class="header-content">
+      <h1>⚡ Zero Cycle Cheat Sheet</h1>
+      <div class="mode-toggle">
+        <button onclick="setMode('top')" id="btn-mode-top" class="mode-btn active">Top Setup</button>
+        <button onclick="setMode('side')" id="btn-mode-side" class="mode-btn">Side Setup</button>
       </div>
     </div>
-    <div class="card">
-      <div class="section-label">Small Towers</div>
-      <div class="btn-row" id="small-towers"></div>
-      <div class="section-label">Tall Towers</div>
-      <div class="btn-row" id="tall-towers"></div>
-      <div class="section-label">Special</div>
-      <div class="btn-row" id="special-towers"></div>
+  </div>
+
+  <div class="main">
+    <div class="sidebar">
+      <div class="tower-group">
+        <div class="group-label">Small Towers</div>
+        <div class="tower-list" id="small-towers"></div>
+      </div>
+      <div class="tower-group">
+        <div class="group-label">Tall Towers</div>
+        <div class="tower-list" id="tall-towers"></div>
+      </div>
+      <div class="tower-group">
+        <div class="group-label">Special</div>
+        <div class="tower-list" id="special-towers"></div>
+      </div>
     </div>
-    <div class="card">
-      <div class="header" id="tower-header"></div>
-      <div id="tower-details"></div>
+
+    <div class="content">
+      <div class="tower-header" id="tower-header"></div>
+      <div class="sections-grid" id="tower-details"></div>
     </div>
   </div>
+
   <script src="data.js"></script>
   <script src="app.js"></script>
 </body>
