@@ -1,9 +1,6 @@
 let currentMode = 'top';
 let setup = topSetup;
 let selected = setup[0];
-let frontY = null;
-let frontLowY = null;
-let backY = null;
 
 function setMode(mode) {
   currentMode = mode;
@@ -11,36 +8,12 @@ function setMode(mode) {
   
   document.getElementById('btn-mode-top').className = `mode-btn ${mode === 'top' ? 'active' : ''}`;
   document.getElementById('btn-mode-side').className = `mode-btn ${mode === 'side' ? 'active' : ''}`;
-
-  const currentName = selected.name;
-  const found = setup.find(t => t.name === currentName);
+  
+  const found = setup.find(t => t.name === selected.name);
   selected = found || setup[0];
-
-  frontY = null;
-  frontLowY = null;
-  backY = null;
-
+  
   renderButtons();
-  renderDetails();
-}
-
-function renderCoord(c) {
-  const d = c.t?.includes("d");
-  const a = c.t?.includes("a");
-  const b = c.t?.includes("b");
-  const e = c.t?.includes("e") && !b;
-  const p = c.t?.includes("p") && !b;
-  
-  let cls = "coord";
-  if (b) cls += " coord-best";
-  else if (e) cls += " coord-easy";
-  else if (p) cls += " coord-popular";
-  
-  return `<span class="${cls}">
-    <span class="coord-xz">${c.xz}</span>
-    ${d ? '<span class="coord-tag">Double</span>' : ''}
-    ${a ? '<span>💥</span>' : ''}
-  </span>`;
+  renderGrid();
 }
 
 function renderButtons() {
@@ -60,89 +33,74 @@ function renderButtons() {
   });
 }
 
-function renderSection(data, selectedY, side, label, labelClass) {
-  if (!data) {
-    return `
-      <div class="section-box">
-        <div class="section-header ${labelClass}">${label}</div>
-        <div class="no-data">No ${label.toLowerCase()} setup available</div>
-      </div>
-    `;
-  }
-
-  const heights = Object.keys(data);
-  if (selectedY === null || !heights.includes(String(selectedY))) {
-    selectedY = heights[0];
-    if (side === 'front') frontY = selectedY;
-    else if (side === 'frontLow') frontLowY = selectedY;
-    else backY = selectedY;
-  }
-
-  const coords = data[selectedY] || [];
-
-  return `
-    <div class="section-box">
-      <div class="section-header ${labelClass}">${label}</div>
-      <div class="section-content">
-        <div class="y-tabs">
-          ${heights.map(y => `
-            <button onclick="selectY('${side}', '${y}')" class="y-tab ${String(selectedY) === String(y) ? 'active' : ''}">
-              Y${y}
-            </button>
-          `).join("")}
-        </div>
-        <div class="coords-grid">
-          ${coords.map(c => renderCoord(c)).join("")}
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-function renderDetails() {
-  document.getElementById("tower-header").innerHTML = `
-    <div class="tower-title">
-      <span class="tower-name">${selected.name}</span>
-      ${selected.altName ? `<span class="tower-alt">(${selected.altName})</span>` : ''}
-    </div>
-    <div class="tower-meta">
-      ${selected.h ? `<span class="meta-tag meta-height">Height: ${selected.h}</span>` : ''}
-      <span class="meta-tag meta-mode">${currentMode} Setup</span>
-    </div>
-  `;
-
-  let html = '';
-  
-  // Front section
-  html += renderSection(selected.front, frontY, 'front', 'Front', 'front');
-  
-  // Front Low section (if exists)
-  if (selected.frontLow) {
-    html += renderSection(selected.frontLow, frontLowY, 'frontLow', 'Front Low Offset', 'front');
-  }
-  
-  // Back section
-  html += renderSection(selected.back, backY, 'back', 'Back', 'back');
-
-  document.getElementById("tower-details").innerHTML = html;
-}
-
 function selectTower(name) {
   selected = setup.find(t => t.name === name);
-  frontY = null;
-  frontLowY = null;
-  backY = null;
   renderButtons();
-  renderDetails();
+  renderGrid();
 }
 
-function selectY(side, y) {
-  if (side === 'front') frontY = y;
-  else if (side === 'frontLow') frontLowY = y;
-  else backY = y;
-  renderDetails();
+function renderCoords(coords) {
+  if (!coords || coords.length === 0) {
+    return '<span class="empty-cell">—</span>';
+  }
+  return coords.map(c => {
+    const doubleTag = c.t?.includes('d') ? ' (Double)' : '';
+    return `<span class="coord-chip">${c.xz}${doubleTag}</span>`;
+  }).join('');
+}
+
+function renderGrid() {
+  // Render header
+  document.getElementById("tower-header").innerHTML = `
+    <span class="tower-name">${selected.name}</span>
+    ${selected.altName ? `<span class="tower-alt">(${selected.altName})</span>` : ''}
+    ${selected.h ? `<span class="meta-tag meta-height">H: ${selected.h}</span>` : ''}
+    <span class="meta-tag meta-mode">${currentMode}</span>
+  `;
+
+  // Collect all unique Y values from front, frontLow, and back
+  const allYs = new Set();
+  if (selected.front) Object.keys(selected.front).forEach(y => allYs.add(y));
+  if (selected.frontLow) Object.keys(selected.frontLow).forEach(y => allYs.add(y));
+  if (selected.back) Object.keys(selected.back).forEach(y => allYs.add(y));
+  
+  const sortedYs = Array.from(allYs).sort((a, b) => Number(a) - Number(b));
+  const hasFrontLow = !!selected.frontLow;
+
+  if (sortedYs.length === 0) {
+    document.getElementById("tower-grid").innerHTML = '<div class="no-data">No coordinate data available</div>';
+    return;
+  }
+
+  // Build table
+  let html = `<table class="grid-table">
+    <thead>
+      <tr>
+        <th class="col-y">Y</th>
+        <th class="col-front">Front</th>
+        ${hasFrontLow ? '<th class="col-front-low">Front Low</th>' : ''}
+        <th class="col-back">Back</th>
+      </tr>
+    </thead>
+    <tbody>`;
+
+  sortedYs.forEach(y => {
+    const frontCoords = selected.front?.[y];
+    const frontLowCoords = selected.frontLow?.[y];
+    const backCoords = selected.back?.[y];
+    
+    html += `<tr>
+      <td class="y-cell">Y${y}</td>
+      <td class="coord-cell">${renderCoords(frontCoords)}</td>
+      ${hasFrontLow ? `<td class="coord-cell">${renderCoords(frontLowCoords)}</td>` : ''}
+      <td class="coord-cell">${renderCoords(backCoords)}</td>
+    </tr>`;
+  });
+
+  html += '</tbody></table>';
+  document.getElementById("tower-grid").innerHTML = html;
 }
 
 // Initialize
 renderButtons();
-renderDetails();
+renderGrid();
