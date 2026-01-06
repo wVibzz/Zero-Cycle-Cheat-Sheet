@@ -1,6 +1,6 @@
 let topSetup, sideSetup, setup, selected, selectedSetupId, selectedSetupType;
 
-const DATA_URL = 'https://gist.githubusercontent.com/wVibzz/YOUR_DATA_GIST_ID/raw/data.json';
+const DATA_URL = 'https://gist.github.com/wVibzz/82076e7b54f58f8c7940989e114b4aeb';
 
 function renderButtons() {
   const cats = { 
@@ -206,4 +206,5 @@ fetch(DATA_URL + '?t=' + Date.now())
       
       document.body.insertBefore(banner, document.body.firstChild);
     })
-    .catch
+    .catch(() => {});
+})();
