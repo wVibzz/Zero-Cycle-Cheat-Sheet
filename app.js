@@ -1,6 +1,6 @@
 let topSetup, sideSetup, setup, selected, selectedSetupId, selectedSetupType;
 
-const DATA_URL = 'https://gist.githubusercontent.com/wVibzz/82076e7b54f58f8c7940989e114b4aeb/raw/50ed3ad999cf863a81f8339b6661eecec4ce7a4f/data.json';
+const DATA_URL = 'https://gist.githubusercontent.com/wVibzz/82076e7b54f58f8c7940989e114b4aeb/raw/data.json';
 
 function renderButtons() {
   const cats = { 
