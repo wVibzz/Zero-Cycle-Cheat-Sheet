@@ -208,3 +208,28 @@ fetch(DATA_URL + '?t=' + Date.now())
     })
     .catch(() => {});
 })();
+
+// Settings Modal
+function openSettings() {
+  document.getElementById('settings-modal').classList.add('active');
+  document.body.classList.add('modal-open');
+}
+
+function closeSettings() {
+  document.getElementById('settings-modal').classList.remove('active');
+  document.body.classList.remove('modal-open');
+}
+
+// Close modal when clicking outside
+document.getElementById('settings-modal').addEventListener('click', function(e) {
+  if (e.target === this) {
+    closeSettings();
+  }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeSettings();
+  }
+});
