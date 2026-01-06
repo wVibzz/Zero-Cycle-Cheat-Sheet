@@ -765,3 +765,108 @@ html.light-mode .grid-table tr:hover td {
     flex-wrap: wrap;
   }
 }
+
+/* Add these light mode overrides to your styles.css */
+
+html.light-mode .grid-table th.col-y {
+  color: #b45309; /* darker amber */
+}
+
+html.light-mode .grid-table th.col-front {
+  color: #059669; /* darker green */
+}
+
+html.light-mode .grid-table th.col-front-low {
+  color: #0891b2; /* darker cyan */
+}
+
+html.light-mode .grid-table th.col-back {
+  color: #e11d48; /* darker pink/red */
+}
+
+html.light-mode .y-cell {
+  color: #b45309; /* darker amber */
+  background: rgba(251, 191, 36, 0.15);
+}
+
+html.light-mode .meta-height {
+  background: rgba(99, 102, 241, 0.2);
+  color: #4f46e5; /* darker indigo */
+}
+
+html.light-mode .setup-tab.active {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2));
+  color: #6d28d9; /* darker purple */
+}
+
+html.light-mode .setup-tab-side.active {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(251, 191, 36, 0.2));
+  color: #b45309; /* darker amber */
+}
+
+html.light-mode .side-label {
+  color: #b45309;
+}
+
+html.light-mode .setup-type {
+  color: #059669; /* darker green */
+  background: rgba(16, 185, 129, 0.15);
+}
+
+html.light-mode .tag-double {
+  background: rgba(139, 92, 246, 0.2);
+  color: #6d28d9; /* darker purple */
+}
+
+html.light-mode .tag-note {
+  background: rgba(251, 191, 36, 0.25);
+  color: #b45309; /* darker amber */
+}
+
+html.light-mode .tower-btn.small-active {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(6, 182, 212, 0.15));
+  border-color: rgba(16, 185, 129, 0.4);
+  color: #059669;
+}
+
+html.light-mode .tower-btn.medium-active {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(99, 102, 241, 0.15));
+  border-color: rgba(59, 130, 246, 0.4);
+  color: #2563eb;
+}
+
+html.light-mode .tower-btn.tall-active {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(239, 68, 68, 0.15));
+  border-color: rgba(245, 158, 11, 0.4);
+  color: #b45309;
+}
+
+html.light-mode .tower-btn.special-active {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(236, 72, 153, 0.15));
+  border-color: rgba(139, 92, 246, 0.4);
+  color: #7c3aed;
+}
+
+html.light-mode .section-header td {
+  color: #334155;
+}
+
+html.light-mode .announcement-info {
+  background: rgba(59, 130, 246, 0.15);
+  color: #1d4ed8;
+}
+
+html.light-mode .announcement-warning {
+  background: rgba(245, 158, 11, 0.15);
+  color: #b45309;
+}
+
+html.light-mode .announcement-success {
+  background: rgba(16, 185, 129, 0.15);
+  color: #059669;
+}
+
+html.light-mode .announcement-error {
+  background: rgba(239, 68, 68, 0.15);
+  color: #dc2626;
+}
