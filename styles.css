@@ -329,15 +329,8 @@ body.modal-open {
   max-height: calc(100vh - 75px);
 }
 
-/* Tower Header - Sticky */
 .tower-header {
   margin-bottom: 24px;
-  position: sticky;
-  top: 0;
-  background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #0f0f1a 100%);
-  padding: 20px 0;
-  z-index: 50;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .header-top {
