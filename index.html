@@ -6,6 +6,15 @@
   <title>Zero Cycle Cheat Sheet</title>
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="stylesheet" href="styles.css">
+  <script>
+    // Apply theme immediately to prevent flash
+    (function() {
+      const savedTheme = localStorage.getItem('zc-dark-mode');
+      if (savedTheme === 'false') {
+        document.documentElement.classList.add('light-mode');
+      }
+    })();
+  </script>
 </head>
 <body>
   <!-- Settings Modal -->
@@ -23,26 +32,6 @@
           </div>
           <label class="toggle">
             <input type="checkbox" id="dark-mode-toggle" checked>
-            <span class="toggle-slider"></span>
-          </label>
-        </div>
-        <div class="setting-item">
-          <div class="setting-label">
-            <span class="setting-name">Compact View</span>
-            <span class="setting-desc">Reduce spacing in tables</span>
-          </div>
-          <label class="toggle">
-            <input type="checkbox" id="compact-toggle">
-            <span class="toggle-slider"></span>
-          </label>
-        </div>
-        <div class="setting-item">
-          <div class="setting-label">
-            <span class="setting-name">Show Heights</span>
-            <span class="setting-desc">Display tower heights in sidebar</span>
-          </div>
-          <label class="toggle">
-            <input type="checkbox" id="heights-toggle" checked>
             <span class="toggle-slider"></span>
           </label>
         </div>
