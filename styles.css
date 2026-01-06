@@ -503,3 +503,19 @@ h1 {
     white-space: nowrap;
   }
 }
+
+.announcement {
+  padding: 12px 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  font-size: 14px;
+  font-weight: 500;
+}
+.announcement-info { background: rgba(59, 130, 246, 0.2); color: #93c5fd; border-bottom: 1px solid rgba(59, 130, 246, 0.3); }
+.announcement-warning { background: rgba(245, 158, 11, 0.2); color: #fcd34d; border-bottom: 1px solid rgba(245, 158, 11, 0.3); }
+.announcement-success { background: rgba(16, 185, 129, 0.2); color: #6ee7b6; border-bottom: 1px solid rgba(16, 185, 129, 0.3); }
+.announcement-error { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border-bottom: 1px solid rgba(239, 68, 68, 0.3); }
+.announcement button { background: none; border: none; color: inherit; font-size: 20px; cursor: pointer; opacity: 0.7; line-height: 1; }
+.announcement button:hover { opacity: 1; }
