@@ -9,6 +9,11 @@ body {
   flex-direction: column;
 }
 
+html, body {
+  overflow: hidden;
+  height: 100vh;
+}
+
 /* Header */
 .header {
   padding: 20px 32px;
