@@ -1,7 +1,6 @@
-let setup = topSetup;
-let selected = setup[0];
-let selectedSetupId = selected.setups[0].id;
-let selectedSetupType = 'top'; // 'top' or 'side'
+let topSetup, sideSetup, setup, selected, selectedSetupId, selectedSetupType;
+
+const DATA_URL = 'https://gist.githubusercontent.com/wVibzz/YOUR_DATA_GIST_ID/raw/data.json';
 
 function renderButtons() {
   const cats = { 
@@ -59,7 +58,6 @@ function renderGrid() {
   
   const currentSetup = allSetups.find(s => s.id === selectedSetupId) || selected.setups[0];
   
-  // Render header
   let headerHtml = `
     <div class="header-top">
       <span class="tower-name">${selected.name}</span>
@@ -68,7 +66,6 @@ function renderGrid() {
     </div>
   `;
   
-  // Render Top setup tabs
   if (selected.setups.length > 0) {
     headerHtml += `<div class="setup-section">
       <div class="setup-section-label">Top Setups</div>
@@ -80,7 +77,6 @@ function renderGrid() {
     headerHtml += `</div></div>`;
   }
   
-  // Render Side setup tabs if they exist
   if (selected.sideSetups && selected.sideSetups.length > 0) {
     headerHtml += `<div class="setup-section side-section">
       <div class="setup-section-label side-label">Side Setups</div>
@@ -92,14 +88,12 @@ function renderGrid() {
     headerHtml += `</div></div>`;
   }
   
-  // Show setup type if exists
   if (currentSetup.setupType) {
     headerHtml += `<div class="setup-type">${currentSetup.setupType}</div>`;
   }
   
   document.getElementById("tower-header").innerHTML = headerHtml;
 
-  // Collect all unique Y values
   const standingYs = new Set();
   const otherYs = new Set();
   
@@ -119,7 +113,6 @@ function renderGrid() {
     return;
   }
 
-  // Build table
   let html = `<table class="grid-table">
     <thead>
       <tr>
@@ -131,7 +124,6 @@ function renderGrid() {
     </thead>
     <tbody>`;
 
-  // Render standing heights
   if (sortedStandingYs.length > 0) {
     if (hasOther) {
       html += `<tr class="section-header"><td colspan="${hasFrontLow ? 4 : 3}">Standing Heights</td></tr>`;
@@ -150,7 +142,6 @@ function renderGrid() {
     });
   }
 
-  // Render other heights (with bed break chance)
   if (sortedOtherYs.length > 0) {
     html += `<tr class="section-header"><td colspan="${hasFrontLow ? 4 : 3}">Other Heights (Bed Break Risk)</td></tr>`;
     sortedOtherYs.forEach(y => {
@@ -170,9 +161,24 @@ function renderGrid() {
   document.getElementById("tower-grid").innerHTML = html;
 }
 
-// Initialize
-renderButtons();
-renderGrid();
+// Load data and initialize
+fetch(DATA_URL + '?t=' + Date.now())
+  .then(r => r.json())
+  .then(data => {
+    topSetup = data.topSetup;
+    sideSetup = data.sideSetup;
+    setup = topSetup;
+    selected = setup[0];
+    selectedSetupId = selected.setups[0].id;
+    selectedSetupType = 'top';
+    
+    renderButtons();
+    renderGrid();
+  })
+  .catch(err => {
+    console.error('Failed to load data:', err);
+    document.getElementById('tower-grid').innerHTML = '<div class="no-data">Failed to load tower data</div>';
+  });
 
 // Announcement from Gist
 (function() {
@@ -200,5 +206,4 @@ renderGrid();
       
       document.body.insertBefore(banner, document.body.firstChild);
     })
-    .catch(() => {});
-})();
+    .catch
