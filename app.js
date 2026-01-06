@@ -173,3 +173,32 @@ function renderGrid() {
 // Initialize
 renderButtons();
 renderGrid();
+
+// Announcement from Gist
+(function() {
+  const GIST_URL = 'https://gist.githubusercontent.com/wVibzz/fc4d2a76c522a802c25b9c794f2bb5aa/raw/announcement.json';
+  
+  fetch(GIST_URL + '?t=' + Date.now())
+    .then(r => r.json())
+    .then(data => {
+      if (!data.enabled || !data.message) return;
+      
+      const dismissed = localStorage.getItem('announcement-dismissed');
+      if (dismissed === data.message) return;
+      
+      const banner = document.createElement('div');
+      banner.className = `announcement announcement-${data.type || 'info'}`;
+      banner.innerHTML = `
+        <span>${data.message}</span>
+        <button aria-label="Dismiss">&times;</button>
+      `;
+      
+      banner.querySelector('button').onclick = () => {
+        localStorage.setItem('announcement-dismissed', data.message);
+        banner.remove();
+      };
+      
+      document.body.insertBefore(banner, document.body.firstChild);
+    })
+    .catch(() => {});
+})();
