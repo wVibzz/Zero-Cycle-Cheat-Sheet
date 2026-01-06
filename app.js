@@ -8,7 +8,8 @@ function initDarkMode() {
   if (!toggle) return;
   
   const saved = localStorage.getItem('zc-dark-mode');
-  const isDark = saved !== 'false';
+  // Default to dark mode (true) if nothing is saved
+  const isDark = saved === null || saved === 'true';
   
   toggle.checked = isDark;
   if (!isDark) {
@@ -17,7 +18,8 @@ function initDarkMode() {
   
   toggle.addEventListener('change', function() {
     const isDarkMode = this.checked;
-    localStorage.setItem('zc-dark-mode', isDarkMode);
+    // Save as string explicitly
+    localStorage.setItem('zc-dark-mode', isDarkMode ? 'true' : 'false');
     
     if (isDarkMode) {
       document.documentElement.classList.remove('light-mode');
