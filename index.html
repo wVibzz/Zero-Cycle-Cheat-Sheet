@@ -10,6 +10,7 @@
     // Apply theme immediately to prevent flash
     (function() {
       const savedTheme = localStorage.getItem('zc-dark-mode');
+      // Only add light-mode if explicitly set to 'false'
       if (savedTheme === 'false') {
         document.documentElement.classList.add('light-mode');
       }
