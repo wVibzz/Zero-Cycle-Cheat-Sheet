@@ -161,27 +161,66 @@ function renderGrid() {
   document.getElementById("tower-grid").innerHTML = html;
 }
 
-// Load data and initialize
-fetch(DATA_URL + '?t=' + Date.now())
-  .then(r => r.json())
-  .then(data => {
-    topSetup = data.topSetup;
-    sideSetup = data.sideSetup;
-    setup = topSetup;
-    selected = setup[0];
-    selectedSetupId = selected.setups[0].id;
-    selectedSetupType = 'top';
+// Settings Modal
+function openSettings() {
+  const modal = document.getElementById('settings-modal');
+  if (modal) {
+    modal.classList.add('active');
+    document.body.classList.add('modal-open');
+  }
+}
 
-    renderButtons();
-    renderGrid();
-  })
-  .catch(err => {
-    console.error('Failed to load data:', err);
-    document.getElementById('tower-grid').innerHTML = '<div class="no-data">Failed to load tower data</div>';
+function closeSettings() {
+  const modal = document.getElementById('settings-modal');
+  if (modal) {
+    modal.classList.remove('active');
+    document.body.classList.remove('modal-open');
+  }
+}
+
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  // Settings modal event listeners
+  const settingsModal = document.getElementById('settings-modal');
+  if (settingsModal) {
+    // Close modal when clicking outside
+    settingsModal.addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeSettings();
+      }
+    });
+  }
+
+  // Close modal with Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      closeSettings();
+    }
   });
 
-// Announcement from Gist
-(function() {
+  // Load tower data if on main page
+  const towerGrid = document.getElementById('tower-grid');
+  if (towerGrid) {
+    fetch(DATA_URL + '?t=' + Date.now())
+      .then(r => r.json())
+      .then(data => {
+        topSetup = data.topSetup;
+        sideSetup = data.sideSetup;
+        setup = topSetup;
+        selected = setup[0];
+        selectedSetupId = selected.setups[0].id;
+        selectedSetupType = 'top';
+
+        renderButtons();
+        renderGrid();
+      })
+      .catch(err => {
+        console.error('Failed to load data:', err);
+        towerGrid.innerHTML = '<div class="no-data">Failed to load tower data</div>';
+      });
+  }
+
+  // Announcement from Gist
   const GIST_URL = 'https://gist.githubusercontent.com/wVibzz/fc4d2a76c522a802c25b9c794f2bb5aa/raw/announcement.json';
 
   fetch(GIST_URL + '?t=' + Date.now())
@@ -207,29 +246,4 @@ fetch(DATA_URL + '?t=' + Date.now())
       document.body.insertBefore(banner, document.body.firstChild);
     })
     .catch(() => {});
-})();
-
-// Settings Modal
-function openSettings() {
-  document.getElementById('settings-modal').classList.add('active');
-  document.body.classList.add('modal-open');
-}
-
-function closeSettings() {
-  document.getElementById('settings-modal').classList.remove('active');
-  document.body.classList.remove('modal-open');
-}
-
-// Close modal when clicking outside
-document.getElementById('settings-modal').addEventListener('click', function(e) {
-  if (e.target === this) {
-    closeSettings();
-  }
-});
-
-// Close modal with Escape key
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') {
-    closeSettings();
-  }
 });
