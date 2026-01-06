@@ -3,17 +3,17 @@ let topSetup, sideSetup, setup, selected, selectedSetupId, selectedSetupType;
 const DATA_URL = 'https://gist.githubusercontent.com/wVibzz/82076e7b54f58f8c7940989e114b4aeb/raw/data.json';
 
 function renderButtons() {
-  const cats = { 
-    small: "small-towers", 
+  const cats = {
+    small: "small-towers",
     medium: "medium-towers",
-    tall: "tall-towers", 
-    special: "special-towers" 
+    tall: "tall-towers",
+    special: "special-towers"
   };
-  
+
   Object.keys(cats).forEach(cat => {
     const container = document.getElementById(cats[cat]);
     if (!container) return;
-    
+
     const towers = setup.filter(t => t.category === cat);
     container.innerHTML = towers.map(t => {
       const isSelected = selected.name === t.name;
@@ -52,12 +52,12 @@ function renderCoords(coords) {
 }
 
 function renderGrid() {
-  const allSetups = selectedSetupType === 'side' && selected.sideSetups 
-    ? selected.sideSetups 
+  const allSetups = selectedSetupType === 'side' && selected.sideSetups
+    ? selected.sideSetups
     : selected.setups;
-  
+
   const currentSetup = allSetups.find(s => s.id === selectedSetupId) || selected.setups[0];
-  
+
   let headerHtml = `
     <div class="header-top">
       <span class="tower-name">${selected.name}</span>
@@ -65,7 +65,7 @@ function renderGrid() {
       ${selected.h ? `<span class="meta-tag meta-height">H: ${selected.h}</span>` : ''}
     </div>
   `;
-  
+
   if (selected.setups.length > 0) {
     headerHtml += `<div class="setup-section">
       <div class="setup-section-label">Top Setups</div>
@@ -76,7 +76,7 @@ function renderGrid() {
     });
     headerHtml += `</div></div>`;
   }
-  
+
   if (selected.sideSetups && selected.sideSetups.length > 0) {
     headerHtml += `<div class="setup-section side-section">
       <div class="setup-section-label side-label">Side Setups</div>
@@ -87,22 +87,22 @@ function renderGrid() {
     });
     headerHtml += `</div></div>`;
   }
-  
+
   if (currentSetup.setupType) {
     headerHtml += `<div class="setup-type">${currentSetup.setupType}</div>`;
   }
-  
+
   document.getElementById("tower-header").innerHTML = headerHtml;
 
   const standingYs = new Set();
   const otherYs = new Set();
-  
+
   if (currentSetup.front) Object.keys(currentSetup.front).forEach(y => standingYs.add(y));
   if (currentSetup.frontLow) Object.keys(currentSetup.frontLow).forEach(y => standingYs.add(y));
   if (currentSetup.back) Object.keys(currentSetup.back).forEach(y => standingYs.add(y));
   if (currentSetup.frontOther) Object.keys(currentSetup.frontOther).forEach(y => otherYs.add(y));
   if (currentSetup.backOther) Object.keys(currentSetup.backOther).forEach(y => otherYs.add(y));
-  
+
   const sortedStandingYs = Array.from(standingYs).sort((a, b) => Number(a) - Number(b));
   const sortedOtherYs = Array.from(otherYs).sort((a, b) => Number(a) - Number(b));
   const hasFrontLow = !!currentSetup.frontLow;
@@ -132,7 +132,7 @@ function renderGrid() {
       const frontCoords = currentSetup.front?.[y];
       const frontLowCoords = currentSetup.frontLow?.[y];
       const backCoords = currentSetup.back?.[y];
-      
+
       html += `<tr>
         <td class="y-cell">Y${y}</td>
         <td class="coord-cell">${renderCoords(frontCoords)}</td>
@@ -147,7 +147,7 @@ function renderGrid() {
     sortedOtherYs.forEach(y => {
       const frontCoords = currentSetup.frontOther?.[y];
       const backCoords = currentSetup.backOther?.[y];
-      
+
       html += `<tr class="other-height">
         <td class="y-cell">Y${y}</td>
         <td class="coord-cell">${renderCoords(frontCoords)}</td>
@@ -171,7 +171,7 @@ fetch(DATA_URL + '?t=' + Date.now())
     selected = setup[0];
     selectedSetupId = selected.setups[0].id;
     selectedSetupType = 'top';
-    
+
     renderButtons();
     renderGrid();
   })
@@ -183,27 +183,27 @@ fetch(DATA_URL + '?t=' + Date.now())
 // Announcement from Gist
 (function() {
   const GIST_URL = 'https://gist.githubusercontent.com/wVibzz/fc4d2a76c522a802c25b9c794f2bb5aa/raw/announcement.json';
-  
+
   fetch(GIST_URL + '?t=' + Date.now())
     .then(r => r.json())
     .then(data => {
       if (!data.enabled || !data.message) return;
-      
+
       const dismissed = localStorage.getItem('announcement-dismissed');
       if (dismissed === data.message) return;
-      
+
       const banner = document.createElement('div');
       banner.className = `announcement announcement-${data.type || 'info'}`;
       banner.innerHTML = `
         <span>${data.message}</span>
         <button aria-label="Dismiss">&times;</button>
       `;
-      
+
       banner.querySelector('button').onclick = () => {
         localStorage.setItem('announcement-dismissed', data.message);
         banner.remove();
       };
-      
+
       document.body.insertBefore(banner, document.body.firstChild);
     })
     .catch(() => {});
