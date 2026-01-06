@@ -2,6 +2,31 @@ let topSetup, sideSetup, setup, selected, selectedSetupId, selectedSetupType;
 
 const DATA_URL = 'https://gist.githubusercontent.com/wVibzz/82076e7b54f58f8c7940989e114b4aeb/raw/data.json';
 
+// Dark Mode Functions
+function initDarkMode() {
+  const toggle = document.getElementById('dark-mode-toggle');
+  if (!toggle) return;
+  
+  const saved = localStorage.getItem('zc-dark-mode');
+  const isDark = saved !== 'false';
+  
+  toggle.checked = isDark;
+  if (!isDark) {
+    document.documentElement.classList.add('light-mode');
+  }
+  
+  toggle.addEventListener('change', function() {
+    const isDarkMode = this.checked;
+    localStorage.setItem('zc-dark-mode', isDarkMode);
+    
+    if (isDarkMode) {
+      document.documentElement.classList.remove('light-mode');
+    } else {
+      document.documentElement.classList.add('light-mode');
+    }
+  });
+}
+
 function renderButtons() {
   const cats = {
     small: "small-towers",
@@ -180,6 +205,9 @@ function closeSettings() {
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
+  // Initialize dark mode
+  initDarkMode();
+  
   // Settings modal event listeners
   const settingsModal = document.getElementById('settings-modal');
   if (settingsModal) {
