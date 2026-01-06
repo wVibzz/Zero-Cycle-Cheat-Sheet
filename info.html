@@ -6,6 +6,101 @@
   <title>Info - Zero Cycle Cheat Sheet</title>
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="stylesheet" href="styles.css">
+  <style>
+    .info-page {
+      overflow-y: auto;
+    }
+    .info-content {
+      padding: 40px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .info-content h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+      margin-top: 32px;
+    }
+    .info-content h2:first-child {
+      margin-top: 0;
+    }
+    .info-section {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .info-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      transition: all 0.2s ease;
+    }
+    .info-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-hover);
+    }
+    .info-card h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #a78bfa;
+      margin-bottom: 8px;
+    }
+    html.light-mode .info-card h3 {
+      color: #7c3aed;
+    }
+    .info-card p {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .video-container {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%;
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+    }
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .source-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+    .source-link:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-hover);
+      color: #34d399;
+    }
+    html.light-mode .source-link:hover {
+      color: #059669;
+    }
+    .source-link svg {
+      color: #34d399;
+      flex-shrink: 0;
+    }
+    html.light-mode .source-link svg {
+      color: #059669;
+    }
+  </style>
   <script>
     // Apply theme immediately to prevent flash
     (function() {
@@ -55,8 +150,39 @@
   </div>
   <div class="info-page">
     <div class="info-content">
-      <h2>Information</h2>
-      <p>Content coming soon...</p>
+      <h2>Setup Types</h2>
+      <div class="info-section">
+        <div class="info-card">
+          <h3>Hybrid</h3>
+          <p>Setups where the bed is facing the north/south axis.</p>
+        </div>
+        <div class="info-card">
+          <h3>Modern</h3>
+          <p>Setups where the bed is facing the east/west axis.</p>
+        </div>
+        <div class="info-card">
+          <h3>Multiblock</h3>
+          <p>Has beds on both axes. If you choose to do 2 obby instead, one of the two bed positions is the main one and is listed as the setup type.</p>
+        </div>
+        <div class="info-card">
+          <h3>Multiblock Adjusted</h3>
+          <p>A standing block where you are standing diagonal to the two bed positions made by placing 3 obby.</p>
+        </div>
+      </div>
+
+      <h2>Sources</h2>
+      <div class="info-section">
+        <div class="video-container">
+          <iframe src="https://www.youtube.com/embed/2Nw7Y5QxYFg" title="YouTube video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="video-container">
+          <iframe src="https://www.youtube.com/embed/PB5UQB13VHc" title="YouTube video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <a href="https://docs.google.com/spreadsheets/d/12OGxoqYkRIDipQ61tRJRSY2iBT-sTLveSN4X4qho0sM/edit?usp=sharing" target="_blank" class="source-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" x2="8" y1="13" y2="13"></line><line x1="16" x2="8" y1="17" y2="17"></line><line x1="10" x2="8" y1="9" y2="9"></line></svg>
+          Zero Cycle Spreadsheet (Google Sheets)
+        </a>
+      </div>
     </div>
   </div>
   <script src="app.js"></script>
