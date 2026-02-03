@@ -47,7 +47,6 @@ function renderButtons() {
       const activeClass = isSelected ? `${cat}-active` : '';
       return `<button onclick="selectTower('${t.name}')" class="tower-btn ${activeClass}">
         ${t.name}
-        ${t.h ? `<span class="tower-height">${t.h}</span>` : ''}
       </button>`;
     }).join("");
   });
