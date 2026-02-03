@@ -327,9 +327,8 @@ body.modal-open {
   transition: all 0.15s ease;
   text-align: left;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
-  gap: 8px;
 }
 
 .tower-btn:hover {
@@ -871,6 +870,8 @@ html.light-mode .announcement-error {
     flex: 0 0 auto;
     min-width: fit-content;
     white-space: nowrap;
+    justify-content: flex-start;
+    gap: 8px;
   }
 
   .tower-btn:hover {
