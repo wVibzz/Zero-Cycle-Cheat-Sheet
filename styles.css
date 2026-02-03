@@ -327,9 +327,9 @@ body.modal-open {
   transition: all 0.15s ease;
   text-align: left;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 }
 
 .tower-btn:hover {
@@ -366,6 +366,8 @@ body.modal-open {
   font-size: 11px;
   color: var(--text-dim);
   font-family: monospace;
+  margin-left: 8px;
+  flex-shrink: 0;
 }
 
 /* Content Area */
