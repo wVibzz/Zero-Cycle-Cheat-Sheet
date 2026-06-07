@@ -1,32 +1,33 @@
-let topSetup, sideSetup, setup, selected, selectedSetupId, selectedSetupType;
+let towers, selected;
 
-const DATA_URL = 'https://gist.githubusercontent.com/wVibzz/82076e7b54f58f8c7940989e114b4aeb/raw/data.json';
+const DATA_URL = 'https://gist.githubusercontent.com/wVibzz/d7daea325f795bd41ed16cf2d83f8c7a/raw/data.json';
 
-// Dark Mode Functions
 function initDarkMode() {
   const toggle = document.getElementById('dark-mode-toggle');
   if (!toggle) return;
-  
+
   const saved = localStorage.getItem('zc-dark-mode');
-  // Default to dark mode (true) if nothing is saved
   const isDark = saved === null || saved === 'true';
-  
+
   toggle.checked = isDark;
   if (!isDark) {
     document.documentElement.classList.add('light-mode');
   }
-  
+
   toggle.addEventListener('change', function() {
     const isDarkMode = this.checked;
-    // Save as string explicitly
     localStorage.setItem('zc-dark-mode', isDarkMode ? 'true' : 'false');
-    
+
     if (isDarkMode) {
       document.documentElement.classList.remove('light-mode');
     } else {
       document.documentElement.classList.add('light-mode');
     }
   });
+}
+
+function esc(s) {
+  return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
 function renderButtons() {
@@ -41,100 +42,64 @@ function renderButtons() {
     const container = document.getElementById(cats[cat]);
     if (!container) return;
 
-    const towers = setup.filter(t => t.category === cat);
-    container.innerHTML = towers.map(t => {
-      const isSelected = selected.name === t.name;
-      const activeClass = isSelected ? `${cat}-active` : '';
-      return `<button onclick="selectTower('${t.name}')" class="tower-btn ${activeClass}">
-        ${t.name}
+    const list = towers.filter(t => t.category === cat);
+    container.innerHTML = list.map(t => {
+      const activeClass = selected && selected.code === t.code ? `${cat}-active` : '';
+      const code = t.name !== t.code ? `<span class="tower-height">${esc(t.code)}</span>` : '';
+      return `<button onclick="selectTower('${esc(t.code)}')" class="tower-btn ${activeClass}">
+        ${esc(t.name)}${code}
       </button>`;
     }).join("");
   });
 }
 
-function selectTower(name) {
-  selected = setup.find(t => t.name === name);
-  selectedSetupId = selected.setups[0].id;
-  selectedSetupType = 'top';
+function selectTower(code) {
+  selected = towers.find(t => t.code === code);
   renderButtons();
   renderGrid();
 }
 
-function selectSetup(id, type) {
-  selectedSetupId = id;
-  selectedSetupType = type;
-  renderGrid();
-}
-
-function renderCoords(coords) {
-  if (!coords || coords.length === 0) {
-    return '<span class="empty-cell">—</span>';
+function renderOptions(opts) {
+  if (!opts || opts.length === 0) {
+    return '<span class="empty-cell">&mdash;</span>';
   }
-  return coords.map(c => {
-    const doubleTag = c.t?.includes('d') ? ' <span class="tag tag-double">Double</span>' : '';
-    const noteTag = c.note ? ` <span class="tag tag-note">${c.note}</span>` : '';
-    return `<span class="coord-chip">${c.xz}${doubleTag}${noteTag}</span>`;
-  }).join('');
+  return opts.map(o => {
+    const bow = o.bow === 'with'
+      ? '<span class="opt-bow opt-bow-with">With bow</span>'
+      : o.bow === 'no'
+        ? '<span class="opt-bow opt-bow-no">No bow</span>'
+        : '';
+    const warn = o.anchor ? `<span class="opt-warn">${esc(o.anchor)}</span>` : '';
+    return `<div class="opt">
+      <div class="opt-tags">
+        <span class="opt-orient">${esc(o.orient)}</span>
+        ${bow}
+      </div>
+      <div class="opt-coord">
+        <span class="opt-label">Stand</span>
+        <span class="coord-val">${esc(o.player)}</span>
+      </div>
+      <div class="opt-coord">
+        <span class="opt-label opt-label-bed">Bed</span>
+        <span class="coord-val coord-val-bed">${esc(o.bed)}</span>
+      </div>
+      ${warn}
+    </div>`;
+  }).join('<div class="opt-divider"></div>');
 }
 
 function renderGrid() {
-  const allSetups = selectedSetupType === 'side' && selected.sideSetups
-    ? selected.sideSetups
-    : selected.setups;
-
-  const currentSetup = allSetups.find(s => s.id === selectedSetupId) || selected.setups[0];
-
-  let headerHtml = `
+  const headerHtml = `
     <div class="header-top">
-      <span class="tower-name">${selected.name}</span>
-      ${selected.altName ? `<span class="tower-alt">(${selected.altName})</span>` : ''}
-      ${selected.h ? `<span class="meta-tag meta-height">H: ${selected.h}</span>` : ''}
+      <span class="tower-name">${esc(selected.name)}</span>
+      ${selected.name !== selected.code ? `<span class="tower-alt">(${esc(selected.code)})</span>` : ''}
+      ${selected.h ? `<span class="meta-tag meta-height">H: ${esc(selected.h)}</span>` : ''}
     </div>
   `;
-
-  if (selected.setups.length > 0) {
-    headerHtml += `<div class="setup-section">
-      <div class="setup-section-label">Top Setups</div>
-      <div class="setup-tabs">`;
-    selected.setups.forEach(s => {
-      const isActive = (s.id === selectedSetupId && selectedSetupType === 'top') ? 'active' : '';
-      headerHtml += `<button class="setup-tab ${isActive}" onclick="selectSetup('${s.id}', 'top')">${s.label}</button>`;
-    });
-    headerHtml += `</div></div>`;
-  }
-
-  if (selected.sideSetups && selected.sideSetups.length > 0) {
-    headerHtml += `<div class="setup-section side-section">
-      <div class="setup-section-label side-label">Side Setups</div>
-      <div class="setup-tabs">`;
-    selected.sideSetups.forEach(s => {
-      const isActive = (s.id === selectedSetupId && selectedSetupType === 'side') ? 'active' : '';
-      headerHtml += `<button class="setup-tab setup-tab-side ${isActive}" onclick="selectSetup('${s.id}', 'side')">${s.label}</button>`;
-    });
-    headerHtml += `</div></div>`;
-  }
-
-  if (currentSetup.setupType) {
-    headerHtml += `<div class="setup-type">${currentSetup.setupType}</div>`;
-  }
-
   document.getElementById("tower-header").innerHTML = headerHtml;
 
-  const standingYs = new Set();
-  const otherYs = new Set();
-
-  if (currentSetup.front) Object.keys(currentSetup.front).forEach(y => standingYs.add(y));
-  if (currentSetup.frontLow) Object.keys(currentSetup.frontLow).forEach(y => standingYs.add(y));
-  if (currentSetup.back) Object.keys(currentSetup.back).forEach(y => standingYs.add(y));
-  if (currentSetup.frontOther) Object.keys(currentSetup.frontOther).forEach(y => otherYs.add(y));
-  if (currentSetup.backOther) Object.keys(currentSetup.backOther).forEach(y => otherYs.add(y));
-
-  const sortedStandingYs = Array.from(standingYs).sort((a, b) => Number(a) - Number(b));
-  const sortedOtherYs = Array.from(otherYs).sort((a, b) => Number(a) - Number(b));
-  const hasFrontLow = !!currentSetup.frontLow;
-  const hasOther = sortedOtherYs.length > 0;
-
-  if (sortedStandingYs.length === 0 && sortedOtherYs.length === 0) {
+  const heights = selected.heights || [];
+  if (heights.length === 0) {
     document.getElementById("tower-grid").innerHTML = '<div class="no-data">No coordinate data available</div>';
     return;
   }
@@ -142,46 +107,20 @@ function renderGrid() {
   let html = `<table class="grid-table">
     <thead>
       <tr>
-        <th class="col-y">Y</th>
+        <th class="col-y">Standing Height</th>
         <th class="col-front">Front</th>
-        ${hasFrontLow ? '<th class="col-front-low">Front Low</th>' : ''}
         <th class="col-back">Back</th>
       </tr>
     </thead>
     <tbody>`;
 
-  if (sortedStandingYs.length > 0) {
-    if (hasOther) {
-      html += `<tr class="section-header"><td colspan="${hasFrontLow ? 4 : 3}">Standing Heights</td></tr>`;
-    }
-    sortedStandingYs.forEach(y => {
-      const frontCoords = currentSetup.front?.[y];
-      const frontLowCoords = currentSetup.frontLow?.[y];
-      const backCoords = currentSetup.back?.[y];
-
-      html += `<tr>
-        <td class="y-cell">Y${y}</td>
-        <td class="coord-cell">${renderCoords(frontCoords)}</td>
-        ${hasFrontLow ? `<td class="coord-cell">${renderCoords(frontLowCoords)}</td>` : ''}
-        <td class="coord-cell">${renderCoords(backCoords)}</td>
-      </tr>`;
-    });
-  }
-
-  if (sortedOtherYs.length > 0) {
-    html += `<tr class="section-header"><td colspan="${hasFrontLow ? 4 : 3}">Other Heights (Bed Break Risk)</td></tr>`;
-    sortedOtherYs.forEach(y => {
-      const frontCoords = currentSetup.frontOther?.[y];
-      const backCoords = currentSetup.backOther?.[y];
-
-      html += `<tr class="other-height">
-        <td class="y-cell">Y${y}</td>
-        <td class="coord-cell">${renderCoords(frontCoords)}</td>
-        ${hasFrontLow ? `<td class="coord-cell"><span class="empty-cell">—</span></td>` : ''}
-        <td class="coord-cell">${renderCoords(backCoords)}</td>
-      </tr>`;
-    });
-  }
+  heights.forEach(row => {
+    html += `<tr>
+      <td class="y-cell">${esc(row.label)}</td>
+      <td class="coord-cell">${renderOptions(row.front)}</td>
+      <td class="coord-cell">${renderOptions(row.back)}</td>
+    </tr>`;
+  });
 
   html += '</tbody></table>';
   document.getElementById("tower-grid").innerHTML = html;
@@ -206,13 +145,10 @@ function closeSettings() {
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
-  // Initialize dark mode
   initDarkMode();
-  
-  // Settings modal event listeners
+
   const settingsModal = document.getElementById('settings-modal');
   if (settingsModal) {
-    // Close modal when clicking outside
     settingsModal.addEventListener('click', function(e) {
       if (e.target === this) {
         closeSettings();
@@ -220,26 +156,19 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Close modal with Escape key
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
       closeSettings();
     }
   });
 
-  // Load tower data if on main page
   const towerGrid = document.getElementById('tower-grid');
   if (towerGrid) {
     fetch(DATA_URL + '?t=' + Date.now())
       .then(r => r.json())
       .then(data => {
-        topSetup = data.topSetup;
-        sideSetup = data.sideSetup;
-        setup = topSetup;
-        selected = setup[0];
-        selectedSetupId = selected.setups[0].id;
-        selectedSetupType = 'top';
-
+        towers = data.towers;
+        selected = towers[0];
         renderButtons();
         renderGrid();
       })
