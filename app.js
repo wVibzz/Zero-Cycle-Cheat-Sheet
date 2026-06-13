@@ -53,10 +53,32 @@ function renderButtons() {
   });
 }
 
-function selectTower(code) {
-  selected = towers.find(t => t.code === code);
+function slugify(s) {
+  return String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+}
+
+function towerBySlug(slug) {
+  return towers.find(t => slugify(t.name) === slug);
+}
+
+function render() {
+  document.title = `${selected.name} - Zero Cycle Cheat Sheet`;
   renderButtons();
   renderGrid();
+}
+
+function selectFromUrl() {
+  const slug = decodeURIComponent(location.hash.replace(/^#/, ''));
+  selected = (slug && towerBySlug(slug)) || towers[0];
+  render();
+}
+
+function selectTower(code) {
+  const t = towers.find(t => t.code === code);
+  if (!t) return;
+  selected = t;
+  history.pushState(null, '', '#' + slugify(t.name));
+  render();
 }
 
 function renderOptions(opts) {
@@ -168,9 +190,12 @@ document.addEventListener('DOMContentLoaded', function() {
       .then(r => r.json())
       .then(data => {
         towers = data.towers;
-        selected = towers[0];
-        renderButtons();
-        renderGrid();
+        selectFromUrl();
+        const canonical = '#' + slugify(selected.name);
+        if (location.hash !== canonical) {
+          history.replaceState(null, '', canonical);
+        }
+        window.addEventListener('popstate', selectFromUrl);
       })
       .catch(err => {
         console.error('Failed to load data:', err);
