@@ -19,10 +19,6 @@ window.I18N = (function() {
     (root || document).querySelectorAll('[data-i18n]').forEach(el => {
       el.textContent = t(el.getAttribute('data-i18n'), el.textContent.trim());
     });
-    (root || document).querySelectorAll('[data-i18n-aria]').forEach(el => {
-      const key = el.getAttribute('data-i18n-aria');
-      el.setAttribute('aria-label', t(key, el.getAttribute('aria-label') || ''));
-    });
     const titleEl = document.querySelector('title[data-i18n]');
     if (titleEl) document.title = titleEl.textContent;
   }

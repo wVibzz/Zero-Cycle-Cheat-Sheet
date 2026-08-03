@@ -1,33 +1,23 @@
 {
   "meta.name": "English",
   "meta.code": "en",
-
   "app.title": "Zero Cycle Cheat Sheet",
   "app.info_title": "Info - Zero Cycle Cheat Sheet",
-
   "nav.info": "Info",
   "nav.back": "Back",
-  "nav.language": "Language",
-  "nav.dark_mode": "Dark Mode",
-
   "group.small": "Small",
   "group.medium": "Medium",
   "group.tall": "Tall",
   "group.special": "Special",
-
   "table.standing_height": "Standing Height",
   "table.front": "Front",
   "table.back": "Back",
-
   "opt.stand": "Stand",
   "opt.bed": "Bed",
   "opt.with_bow": "With bow",
   "opt.no_bow": "No bow",
-
   "msg.load_failed": "Failed to load tower data",
   "msg.no_data": "No coordinate data available",
-  "a11y.dismiss": "Dismiss",
-
   "orient.Hybrid (N/S)": "Hybrid (N/S)",
   "orient.Hybrid Offset (1bo)": "Hybrid Offset (1bo)",
   "orient.Hybrid Offset (2bo)": "Hybrid Offset (2bo)",
@@ -39,15 +29,12 @@
   "orient.Modern Offset (5bo)": "Modern Offset (5bo)",
   "orient.Tall Tower Side (3bo)": "Tall Tower Side (3bo)",
   "orient.Universal Side": "Universal Side",
-
   "anchor.An anchor in the bed position breaks crystal": "An anchor in the bed position breaks crystal",
   "anchor.The top anchor breaks crystal when detonated": "The top anchor breaks crystal when detonated",
-
   "tab.setup_types": "Setup Types",
   "tab.key": "Key",
   "tab.sources": "Sources",
   "tab.submit_issue": "Submit Issue",
-
   "setup.hybrid": "Hybrid",
   "setup.hybrid_desc": "Setups where the bed is facing the north/south axis.",
   "setup.modern": "Modern",
@@ -56,7 +43,6 @@
   "setup.multiblock_desc": "Has beds on both axes. If you choose to do 2 obby instead, one of the two bed positions is the main one and is listed as the setup type.",
   "setup.multiblock_adjusted": "Multiblock Adjusted",
   "setup.multiblock_adjusted_desc": "A standing block where you are standing diagonal to the two bed positions made by placing 3 obby.",
-
   "key.title": "Key",
   "key.ns": "North/South (orientation)",
   "key.ew": "East/West (orientation)",
@@ -68,10 +54,8 @@
   "key.multiblock": "Aligning yourself diagonally to two bed positions",
   "key.multi": "Short for multiblock",
   "key.heights": "The first height is the triple staircase height, the second is the double staircase height",
-
   "sources.spreadsheet": "Pions Zero Cycle Spreadsheet",
   "sources.github": "GitHub Repository",
-
   "issue.title": "Report a Problem or Suggest an Improvement",
   "issue.intro": "Found incorrect coordinates, missing setups, or have a suggestion? Submit an issue on GitHub and help improve the cheat sheet for everyone!",
   "issue.incorrect_data": "Incorrect Data:",

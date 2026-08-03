@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', function() {
       banner.className = `announcement announcement-${data.type || 'info'}`;
       banner.innerHTML = `
         <span>${data.message}</span>
-        <button aria-label="${esc(t('a11y.dismiss', 'Dismiss'))}">&times;</button>
+        <button aria-label="Dismiss">&times;</button>
       `;
 
       banner.querySelector('button').onclick = () => {
