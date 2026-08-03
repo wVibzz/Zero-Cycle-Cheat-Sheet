@@ -30,6 +30,10 @@ function esc(s) {
   return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
+function t(key, fallback) {
+  return window.I18N ? I18N.t(key, fallback) : fallback;
+}
+
 function renderButtons() {
   const cats = {
     small: "small-towers",
@@ -62,7 +66,7 @@ function towerBySlug(slug) {
 }
 
 function render() {
-  document.title = `${selected.name} - Zero Cycle Cheat Sheet`;
+  document.title = `${selected.name} - ${t('app.title', 'Zero Cycle Cheat Sheet')}`;
   renderButtons();
   renderGrid();
 }
@@ -87,22 +91,22 @@ function renderOptions(opts) {
   }
   return opts.map(o => {
     const bow = o.bow === 'with'
-      ? '<span class="opt-bow opt-bow-with">With bow</span>'
+      ? `<span class="opt-bow opt-bow-with">${esc(t('opt.with_bow', 'With bow'))}</span>`
       : o.bow === 'no'
-        ? '<span class="opt-bow opt-bow-no">No bow</span>'
+        ? `<span class="opt-bow opt-bow-no">${esc(t('opt.no_bow', 'No bow'))}</span>`
         : '';
-    const warn = o.anchor ? `<span class="opt-warn">${esc(o.anchor)}</span>` : '';
+    const warn = o.anchor ? `<span class="opt-warn">${esc(t('anchor.' + o.anchor, o.anchor))}</span>` : '';
     return `<div class="opt">
       <div class="opt-tags">
-        <span class="opt-orient">${esc(o.orient)}</span>
+        <span class="opt-orient">${esc(t('orient.' + o.orient, o.orient))}</span>
         ${bow}
       </div>
       <div class="opt-coord">
-        <span class="opt-label">Stand</span>
+        <span class="opt-label">${esc(t('opt.stand', 'Stand'))}</span>
         <span class="coord-val">${esc(o.player)}</span>
       </div>
       <div class="opt-coord">
-        <span class="opt-label opt-label-bed">Bed</span>
+        <span class="opt-label opt-label-bed">${esc(t('opt.bed', 'Bed'))}</span>
         <span class="coord-val coord-val-bed">${esc(o.bed)}</span>
       </div>
       ${warn}
@@ -122,16 +126,17 @@ function renderGrid() {
 
   const heights = selected.heights || [];
   if (heights.length === 0) {
-    document.getElementById("tower-grid").innerHTML = '<div class="no-data">No coordinate data available</div>';
+    document.getElementById("tower-grid").innerHTML =
+      `<div class="no-data">${esc(t('msg.no_data', 'No coordinate data available'))}</div>`;
     return;
   }
 
   let html = `<table class="grid-table">
     <thead>
       <tr>
-        <th class="col-y">Standing Height</th>
-        <th class="col-front">Front</th>
-        <th class="col-back">Back</th>
+        <th class="col-y">${esc(t('table.standing_height', 'Standing Height'))}</th>
+        <th class="col-front">${esc(t('table.front', 'Front'))}</th>
+        <th class="col-back">${esc(t('table.back', 'Back'))}</th>
       </tr>
     </thead>
     <tbody>`;
@@ -148,47 +153,32 @@ function renderGrid() {
   document.getElementById("tower-grid").innerHTML = html;
 }
 
-// Settings Modal
-function openSettings() {
-  const modal = document.getElementById('settings-modal');
-  if (modal) {
-    modal.classList.add('active');
-    document.body.classList.add('modal-open');
-  }
-}
+function initLangSelect() {
+  const sel = document.getElementById('lang-select');
+  if (!sel || !window.I18N) return;
 
-function closeSettings() {
-  const modal = document.getElementById('settings-modal');
-  if (modal) {
-    modal.classList.remove('active');
-    document.body.classList.remove('modal-open');
-  }
+  I18N.list().then(langs => {
+    const active = I18N.current();
+    sel.innerHTML = langs
+      .map(l => `<option value="${esc(l.code)}"${l.code === active ? ' selected' : ''}>${esc(l.name)}</option>`)
+      .join('');
+    sel.addEventListener('change', () => I18N.set(sel.value));
+  });
 }
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
   initDarkMode();
-
-  const settingsModal = document.getElementById('settings-modal');
-  if (settingsModal) {
-    settingsModal.addEventListener('click', function(e) {
-      if (e.target === this) {
-        closeSettings();
-      }
-    });
-  }
-
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-      closeSettings();
-    }
-  });
+  initLangSelect();
 
   const towerGrid = document.getElementById('tower-grid');
   if (towerGrid) {
-    fetch(DATA_URL + '?t=' + Date.now())
-      .then(r => r.json())
-      .then(data => {
+    const langReady = window.I18N ? I18N.ready : Promise.resolve();
+    Promise.all([
+      fetch(DATA_URL + '?t=' + Date.now()).then(r => r.json()),
+      langReady
+    ])
+      .then(([data]) => {
         towers = data.towers;
         selectFromUrl();
         const canonical = '#' + slugify(selected.name);
@@ -199,7 +189,8 @@ document.addEventListener('DOMContentLoaded', function() {
       })
       .catch(err => {
         console.error('Failed to load data:', err);
-        towerGrid.innerHTML = '<div class="no-data">Failed to load tower data</div>';
+        towerGrid.innerHTML =
+          `<div class="no-data">${esc(t('msg.load_failed', 'Failed to load tower data'))}</div>`;
       });
   }
 
@@ -218,7 +209,7 @@ document.addEventListener('DOMContentLoaded', function() {
       banner.className = `announcement announcement-${data.type || 'info'}`;
       banner.innerHTML = `
         <span>${data.message}</span>
-        <button aria-label="Dismiss">&times;</button>
+        <button aria-label="${esc(t('a11y.dismiss', 'Dismiss'))}">&times;</button>
       `;
 
       banner.querySelector('button').onclick = () => {
