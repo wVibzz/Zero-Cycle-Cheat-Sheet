@@ -2,27 +2,24 @@ let towers, selected;
 
 const DATA_URL = 'https://gist.githubusercontent.com/wVibzz/d7daea325f795bd41ed16cf2d83f8c7a/raw/data.json';
 
+function applyTheme(isDark) {
+  document.documentElement.classList.toggle('light-mode', !isDark);
+  const btn = document.getElementById('theme-toggle');
+  if (btn) btn.textContent = isDark ? '🌙' : '☀️';
+}
+
 function initDarkMode() {
-  const toggle = document.getElementById('dark-mode-toggle');
-  if (!toggle) return;
-
   const saved = localStorage.getItem('zc-dark-mode');
-  const isDark = saved === null || saved === 'true';
+  let isDark = saved === null || saved === 'true';
+  applyTheme(isDark);
 
-  toggle.checked = isDark;
-  if (!isDark) {
-    document.documentElement.classList.add('light-mode');
-  }
+  const btn = document.getElementById('theme-toggle');
+  if (!btn) return;
 
-  toggle.addEventListener('change', function() {
-    const isDarkMode = this.checked;
-    localStorage.setItem('zc-dark-mode', isDarkMode ? 'true' : 'false');
-
-    if (isDarkMode) {
-      document.documentElement.classList.remove('light-mode');
-    } else {
-      document.documentElement.classList.add('light-mode');
-    }
+  btn.addEventListener('click', function() {
+    isDark = !isDark;
+    localStorage.setItem('zc-dark-mode', isDark ? 'true' : 'false');
+    applyTheme(isDark);
   });
 }
 
