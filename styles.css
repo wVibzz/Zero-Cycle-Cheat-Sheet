@@ -146,6 +146,7 @@ h1 {
   padding: 0;
   font-size: 17px;
   line-height: 1;
+  font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
   background: var(--bg-input);
   border: 1px solid var(--border-hover);
   border-radius: 8px;
